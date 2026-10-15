@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<meta name="theme-color" content="#1b2733">
+	<title>Gravity Defied</title>
+	<link rel="stylesheet" href="css/style.css">
+</head>
+<body data-state="menu">
+	<canvas class="game-canvas" id="game-canvas"></canvas>
+
+	<header class="hud">
+		<div class="hud-info">
+			<span class="hud-level" id="hud-level"></span>
+			<span class="hud-time" id="hud-time">0:00.00</span>
+		</div>
+		<div class="hud-buttons">
+			<button class="button button-round" data-action="restart"
+				aria-label="Заново">↻</button>
+			<button class="button button-round" data-action="pause"
+				aria-label="Пауза">❚❚</button>
+		</div>
+	</header>
+
+	<div class="joystick" id="joystick">
+		<div class="joystick-knob" id="joystick-knob"></div>
+	</div>
+
+	<div class="editor-bar">
+		<div class="editor-group">
+			<button class="button is-active" data-action="editor-mode"
+				data-mode="draw">Рисовать</button>
+			<button class="button" data-action="editor-mode"
+				data-mode="pan">Двигать</button>
+		</div>
+		<div class="editor-group">
+			<button class="button" data-action="editor-add"
+				data-section="flat">Дорога</button>
+			<button class="button" data-action="editor-add"
+				data-section="jump">Рампа</button>
+			<button class="button" data-action="editor-add"
+				data-section="box">Ящик</button>
+			<button class="button" data-action="editor-add"
+				data-section="spikes">Шипы</button>
+			<button class="button" data-action="editor-add"
+				data-section="spikePit">Яма</button>
+			<button class="button" data-action="editor-add"
+				data-section="gap">Пропасть</button>
+			<button class="button" data-action="editor-add"
+				data-section="tunnel">Тоннель</button>
+			<button class="button" data-action="editor-add"
+				data-section="loop">Петля</button>
+		</div>
+		<div class="editor-group">
+			<button class="button" data-action="editor-undo">
+				Отменить
+			</button>
+			<button class="button" data-action="editor-clear">
+				Очистить
+			</button>
+		</div>
+		<div class="editor-group">
+			<button class="button button-main" data-action="editor-ride">
+				Поехать
+			</button>
+			<button class="button" data-action="menu">Меню</button>
+		</div>
+	</div>
+
+	<section class="screen" id="screen-menu">
+		<div class="panel panel-wide">
+			<h1 class="panel-title">Gravity Defied</h1>
+			<div class="bike-picker" id="bike-picker"></div>
+			<div class="league-list" id="league-list"></div>
+			<div class="custom-track">
+				<div class="level-list" id="custom-track"></div>
+				<div class="menu-buttons">
+					<button class="button" data-action="editor">
+						Редактор трасс
+					</button>
+					<button class="button" data-action="rules">Правила</button>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section class="screen" id="screen-rules" hidden>
+		<div class="panel">
+			<h2 class="panel-title">Правила</h2>
+			<p class="panel-text">
+				Доберись до финиша как можно быстрее и не ударь гонщика
+				головой о землю. Пройденная лига открывает новый мотоцикл.
+			</p>
+			<dl class="info-list">
+				<dt class="info-name"><kbd>W</kbd> <kbd>↑</kbd></dt>
+				<dd class="info-value">газ</dd>
+				<dt class="info-name"><kbd>S</kbd> <kbd>↓</kbd></dt>
+				<dd class="info-value">тормоз</dd>
+				<dt class="info-name"><kbd>A</kbd> <kbd>←</kbd></dt>
+				<dd class="info-value">наклон назад</dd>
+				<dt class="info-name"><kbd>D</kbd> <kbd>→</kbd></dt>
+				<dd class="info-value">наклон вперёд</dd>
+				<dt class="info-name"><kbd>R</kbd></dt>
+				<dd class="info-value">заново</dd>
+				<dt class="info-name"><kbd>Esc</kbd> <kbd>P</kbd></dt>
+				<dd class="info-value">пауза</dd>
+			</dl>
+			<p class="panel-text">
+				На телефоне вместо клавиш джойстик: вверх — газ,
+				вниз — тормоз, влево и вправо — наклон.
+			</p>
+			<button class="button button-main" data-action="menu">
+				Понятно
+			</button>
+		</div>
+	</section>
+
+	<section class="screen" id="screen-pause" hidden>
+		<div class="panel">
+			<h2 class="panel-title">Пауза</h2>
+			<div class="panel-buttons">
+				<button class="button button-main" data-action="resume">
+					Продолжить
+				</button>
+				<button class="button" data-action="restart">Заново</button>
+				<button class="button" data-action="menu">Меню</button>
+			</div>
+		</div>
+	</section>
+
+	<section class="screen" id="screen-crash" hidden>
+		<div class="panel">
+			<h2 class="panel-title title-danger">Авария!</h2>
+			<p class="panel-text">Гонщик не удержался в седле</p>
+			<div class="panel-buttons">
+				<button class="button button-main" data-action="restart">
+					Заново
+				</button>
+				<button class="button" data-action="menu">Меню</button>
+			</div>
+		</div>
+	</section>
+
+	<section class="screen" id="screen-finish" hidden>
+		<div class="panel">
+			<h2 class="panel-title title-success">Финиш!</h2>
+			<p class="panel-record" id="finish-record" hidden>
+				Новый рекорд!
+			</p>
+			<p class="panel-unlock" id="finish-unlock" hidden></p>
+			<dl class="info-list">
+				<dt class="info-name">Время</dt>
+				<dd class="info-value" id="finish-time">0:00.00</dd>
+				<dt class="info-name">Лучшее</dt>
+				<dd class="info-value" id="finish-best">0:00.00</dd>
+			</dl>
+			<div class="panel-buttons">
+				<button class="button button-main" data-action="next"
+					id="next-button">
+					Дальше
+				</button>
+				<button class="button" data-action="restart">Заново</button>
+				<button class="button" data-action="menu">Меню</button>
+			</div>
+		</div>
+	</section>
+
+	<script type="module" src="js/main.js"></script>
+</body>
+</html>

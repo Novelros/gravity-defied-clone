@@ -1,0 +1,42 @@
+export const CONFIG = {
+	FIXED_STEP: 1 / 120,
+	MAX_FRAME_TIME: 0.25,
+	SOLVER_ITERATIONS: 8,
+	GRAVITY: 900,
+
+	WHEEL_RADIUS: 15,
+	WHEEL_GRIP: 0.85,
+	BODY_FRICTION: 0.3,
+	AIR_SPIN_DAMPING: 0.4,
+
+	BRAKE_POWER: 12,
+	LEAN_SHIFT: 0.08,
+	LEAN_SPEED: 6,
+	FLIP_TORQUE: 60,
+
+	HEAD_RADIUS: 9,
+	FRAME_RADIUS: 10,
+	FALL_LIMIT: 1500,
+	WRECK_PUSH: 140,
+
+	GHOST_SAMPLE_RATE: 20,
+	GHOST_ALPHA: 0.35,
+
+	CAMERA_SMOOTHING: 6,
+	CAMERA_LOOK_AHEAD: 0.35,
+	CAMERA_BASE_SIZE: 500,
+	CAMERA_MIN_ZOOM: 0.55,
+	CAMERA_MAX_ZOOM: 1.6,
+
+	EDITOR_ZOOM_SCALE: 0.5,
+	EDITOR_MIN_STEP: 16,
+
+	JOYSTICK_DEAD_ZONE: 0.25,
+
+	STORAGE_KEYS: {
+		records: 'gravity-records-v2',
+		ghostPrefix: 'gravity-replay-',
+		customTrack: 'gravity-custom-sections',
+		bike: 'gravity-bike',
+	},
+};
